@@ -1,3 +1,5 @@
+reset_commits_after_fork.sh
+
 # Miscellaneous
 *.class
 *.log
