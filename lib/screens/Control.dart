@@ -13,21 +13,18 @@ import 'package:pilsbot/components/Joystick.dart';
 import 'package:pilsbot/components/ButtonSettings.dart';
 import 'package:pilsbot/components/ButtonHeadlight.dart';
 import 'package:pilsbot/components/StateBattery.dart';
-import 'package:pilsbot/model/Communication.dart';
 import 'package:pilsbot/screens/Login.dart';
 import 'package:roslib/roslib.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:global_configuration/global_configuration.dart';
+import 'package:pilsbot/model/globals.dart' as globals;
 //import 'package:image/image.dart' as Image;
 
 class ControlScreen extends StatefulWidget {
-
   @override
   _ControlScreenState createState() => _ControlScreenState();
 }
 
 class _ControlScreenState extends State<ControlScreen> {
-  var com;
   Topic cameraStream;
   Topic joystickStream;
   Timer timer;
@@ -35,15 +32,13 @@ class _ControlScreenState extends State<ControlScreen> {
 
   @override
   void initState(){
-    com = RosCom();
     super.initState();
     initConnection();
     timer = Timer.periodic(Duration(milliseconds: period), (tim) async{
-      if(com.ros.status != Status.CONNECTED){
+      if(globals.com.ros.status != Status.CONNECTED){
         timer.cancel();
-        String err = AppLocalizations.of(context).lost_connection.toString();
-        print(err);
-        GlobalConfiguration().updateValue("error_msg", err);
+        globals.errorMessage = AppLocalizations.of(context).lost_connection.toString();
+        print(globals.errorMessage);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => LoginScreen()),
@@ -53,14 +48,14 @@ class _ControlScreenState extends State<ControlScreen> {
   }
 
   void initConnection() async {
-    cameraStream = Topic(ros: com.ros, name: '/usb_cam/image_raw', type: "sensor_msgs/Image", reconnectOnClose: true, queueLength: 200, queueSize: 200);
-    joystickStream = Topic(ros: com.ros, name: '/app/cmd/joystick', type: "sensor_msgs/Joy", reconnectOnClose: true, queueLength: 10, queueSize: 10);
+    cameraStream = Topic(ros: globals.com.ros, name: '/usb_cam/image_raw', type: "sensor_msgs/Image", reconnectOnClose: true, queueLength: 200, queueSize: 200);
+    joystickStream = Topic(ros: globals.com.ros, name: '/app/cmd/joystick', type: "sensor_msgs/Joy", reconnectOnClose: true, queueLength: 10, queueSize: 10);
     //await cameraStream.subscribe();
     setState(() {});
   }
 
   void destroyConnection() async {
-    await com.ros.close();
+    await globals.com.ros.close();
     //await cameraStream.unsubscribe();
     setState(() {});
   }

@@ -7,8 +7,8 @@ import 'package:roslib/roslib.dart';
 import 'package:pilsbot/components/Loading.dart';
 import 'package:pilsbot/screens/Control.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pilsbot/model/Communication.dart';
 import 'package:global_configuration/global_configuration.dart';
+import 'package:pilsbot/model/globals.dart' as globals;
 
 class ConnectingScreen extends StatefulWidget {
   @override
@@ -16,25 +16,21 @@ class ConnectingScreen extends StatefulWidget {
 }
 
 class _ConnectingScreenState extends State<ConnectingScreen> {
-  var com;
-
   @override
   void initState(){
     var url = "ws://"+GlobalConfiguration().getValue("server_ip")+":"+GlobalConfiguration().getValue("server_port_websocket");
-    GlobalConfiguration().updateValue("error_msg", "");
-    com = RosCom();
-    com.ros.url = url;
-    com.ros.connect();
+    globals.errorMessage = "";
+    globals.com.ros.url = url;
+    globals.com.ros.connect();
     print(url);
     super.initState();
     Future.delayed(Duration(milliseconds: 3000), () {
-      if(com.ros.status == Status.CONNECTED){
+      if(globals.com.ros.status == Status.CONNECTED){
         print("connected");
         Navigator.of(context).push(_createRouteToControlScreen());
       } else{
-        String err = AppLocalizations.of(context).connection_failed.toString();
-        print(err);
-        GlobalConfiguration().updateValue("error_msg", err);
+        globals.errorMessage = AppLocalizations.of(context).connection_failed.toString();
+        print(globals.errorMessage);
         Navigator.of(context).push(_createRouteToLoginScreen());
       }
     });
@@ -67,7 +63,7 @@ class _ConnectingScreenState extends State<ConnectingScreen> {
   }
 
   void destroyConnection() async {
-    await com.ros.close();
+    await globals.com.ros.close();
     setState(() {});
   }
 

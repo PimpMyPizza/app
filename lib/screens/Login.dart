@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:pilsbot/components/ButtonConnect.dart';
 import 'package:pilsbot/components/ButtonSettings.dart';
-import 'package:global_configuration/global_configuration.dart';
+import 'package:pilsbot/components/TextError.dart';
 
 class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -13,7 +13,6 @@ class LoginScreen extends StatelessWidget {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight
     ]);
-    String err = GlobalConfiguration().getValue("error_msg").toString();
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
@@ -30,13 +29,7 @@ class LoginScreen extends StatelessWidget {
               ]
             ),
             SizedBox(height: 10),
-            Text(err == "null" ? "" : err,
-              style: TextStyle(
-                color: Colors.blue.withOpacity(1),
-                fontSize: 14,
-                fontWeight: FontWeight.normal,
-              ),
-            ),
+            TextError(),
           ],
         ),
       )
