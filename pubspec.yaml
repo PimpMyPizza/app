@@ -27,6 +27,7 @@ dependencies:
     sdk: flutter
   intl: ^0.16.1 # internationalization
   control_pad: # joystick
+  clippy_flutter: ^1.1.1 # trapezoids and other forms
 
 
   # The following adds the Cupertino Icons font to your application.

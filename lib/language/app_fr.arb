@@ -9,5 +9,6 @@
   "username": "Utilisateur",
   "password": "Mot de passe",
   "connection_failed": "Impossible de se connecter au PilsBot.",
-  "lost_connection": "La connexion a été perdue."
+  "lost_connection": "La connexion a été perdue.",
+  "disconnected": "Déconnection"
 }

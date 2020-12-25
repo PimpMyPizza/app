@@ -39,10 +39,7 @@ class _ControlScreenState extends State<ControlScreen> {
         timer.cancel();
         globals.errorMessage = AppLocalizations.of(context).lost_connection.toString();
         print(globals.errorMessage);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
-        );
+        Navigator.of(context).push(_createRouteToLoginScreen());
       }
     });
   }
@@ -67,97 +64,120 @@ class _ControlScreenState extends State<ControlScreen> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight
     ]);
-    return Scaffold(
-      body: Container(
-        child: Stack(
-          children: <Widget>[
-            StreamBuilder<Object>(
-              stream: cameraStream.subscription,
-              builder: (context, snapshot) {
-                //Image.Image cameraImage;
-                //Image.Image background;
-                if(snapshot.hasData){
-                  print('has data');
-                  print(snapshot.data);
-                  /*var msg = Map<String, dynamic>.from(snapshot.data)['msg'];
-                     var data = Map<String, dynamic>.from(msg)['data'];
-                     var height = Map<String, dynamic>.from(msg)['height'];
-                     var width = Map<String, dynamic>.from(msg)['width'];*/
-                  //var type = Map<String, dynamic>.from(value)['format'];
-                  /*print(height);
-                     print(width);*/
-                  return Container(color: Colors.black,
-                    /*decoration: new BoxDecoration(
-                     image: new DecorationImage(image: , fit: BoxFit.cover,),
-                    ),*/
-                  );
+    return WillPopScope(
+      onWillPop: () async {
+        timer.cancel();
+        globals.errorMessage = AppLocalizations.of(context).disconnected;
+        print(globals.errorMessage);
+        Navigator.of(context).push(_createRouteToLoginScreen());
+        destroyConnection();
+        return false;
+      },
+      child: Scaffold(
+        body: Container(
+          child: Stack(
+            children: <Widget>[
+              StreamBuilder<Object>(
+                stream: cameraStream.subscription,
+                builder: (context, snapshot) {
+                  //Image.Image cameraImage;
+                  //Image.Image background;
+                  if(snapshot.hasData){
+                    print('has data');
+                    print(snapshot.data);
+                    /*var msg = Map<String, dynamic>.from(snapshot.data)['msg'];
+                       var data = Map<String, dynamic>.from(msg)['data'];
+                       var height = Map<String, dynamic>.from(msg)['height'];
+                       var width = Map<String, dynamic>.from(msg)['width'];*/
+                    //var type = Map<String, dynamic>.from(value)['format'];
+                    /*print(height);
+                       print(width);*/
+                    return Container(color: Colors.black,
+                      /*decoration: new BoxDecoration(
+                       image: new DecorationImage(image: , fit: BoxFit.cover,),
+                      ),*/
+                    );
+                  }
+                  return Container(color: Colors.black);
                 }
-                return Container(color: Colors.black);
-              }
-              ),
-            Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SoundBar(),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(height: MediaQuery.of(context).size.height*0.08),
-                            StateSpeed(),
-                            StateBattery(),
-                            StateDriver(),
-                            ButtonSettings(),
-                          ],
-                        )
-                      ]
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            ButtonControlMode(),
-                            ButtonOnOff(),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            ButtonHeadlight(),
-                            ButtonParty(),
-                          ],
-                        ),
-                        Container(height: MediaQuery.of(context).size.width*0.1),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            ButtonBlinker(orientation: 'left'),
-                            ButtonBlinker(orientation: 'right'),
-                          ],
-                        ),
-                      ],
-                    ),
-                    //Container(height: MediaQuery.of(context).size.width*0.04),
-                  ],
                 ),
-                Joystick(),
-              ],
-            ),
-          ],
+              Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SoundBar(),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(height: MediaQuery.of(context).size.height*0.08),
+                              StateSpeed(),
+                              StateBattery(),
+                              StateDriver(),
+                              ButtonSettings(),
+                            ],
+                          )
+                        ]
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              ButtonControlMode(),
+                              ButtonOnOff(),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              ButtonHeadlight(),
+                              ButtonParty(),
+                            ],
+                          ),
+                          Container(height: MediaQuery.of(context).size.width*0.1),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              ButtonBlinker(orientation: 'left'),
+                              ButtonBlinker(orientation: 'right'),
+                            ],
+                          ),
+                        ],
+                      ),
+                      //Container(height: MediaQuery.of(context).size.width*0.04),
+                    ],
+                  ),
+                  Joystick(),
+                ],
+              ),
+            ],
+          )
         )
       )
+    );
+  }
+
+  Route _createRouteToLoginScreen() {
+    return PageRouteBuilder(
+      transitionDuration: Duration(milliseconds: 1300),
+      pageBuilder: (context, animation, secondaryAnimation) => LoginScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: animation.drive(Tween(begin: Offset(-3.0, 0.0), end: Offset.zero).chain(CurveTween(curve: Curves.ease))),
+          child: child,
+        );
+      },
     );
   }
 

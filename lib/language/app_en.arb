@@ -42,5 +42,9 @@
   "lost_connection": "Connection lost.",
   "@lost_connection": {
     "description": "The text that we get when the connection to Pilsbot is lost"
+  },
+  "disconnected": "Disconnected",
+  "@disconnected": {
+    "description": "The text that the user get when he disconnects from the control activity"
   }
 }

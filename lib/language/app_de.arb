@@ -9,5 +9,6 @@
   "username": "Benutzer",
   "password": "Passwort",
   "connection_failed": "Die Verbindung konnte nicht hergestellt werden.",
-  "lost_connection": "Die Verbindung wurde abgebrochen."
+  "lost_connection": "Die Verbindung wurde abgebrochen.",
+  "disconnected": "Abgemeldet."
 }
