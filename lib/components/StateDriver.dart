@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pilsbot/model/Communication.dart';
 import 'package:roslib/roslib.dart';
+import 'package:pilsbot/model/globals.dart' as globals;
 
 class StateDriver extends StatefulWidget {
   StateDriver();
@@ -11,13 +11,10 @@ class StateDriver extends StatefulWidget {
 
 class _StateDriverState extends State<StateDriver> {
   Topic topic;
-  /// Communication with ROS
-  var com;
 
   @override
   void initState(){
-    com = RosCom();
-    topic = Topic(ros: com.ros, name: '/app/driver', type: "std_msgs/String", reconnectOnClose: true, queueLength: 10, queueSize: 10);
+    topic = Topic(ros: globals.com.ros, name: '/app/driver', type: "std_msgs/String", reconnectOnClose: true, queueLength: 10, queueSize: 10);
     super.initState();
     initConnection();
   }
@@ -41,7 +38,7 @@ class _StateDriverState extends State<StateDriver> {
         String username = "?";
         if (snapshot.hasData)
         {
-          // Workaround to for the convertion from object to json
+          // Workaround to for the conversion from object to json
           username = Map<String, dynamic>.from(Map<String, dynamic>.from(snapshot.data)['msg'])['data'];
           color = Colors.blue;
         }
@@ -52,7 +49,7 @@ class _StateDriverState extends State<StateDriver> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Icon(
-                  Icons.drive_eta,
+                  Icons.accessible_forward,
                   size: 30.0,
                   color: color,
                 ),

@@ -24,7 +24,6 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 ButtonSettings(),
-                SizedBox(width: 10),
                 ButtonConnect(),
               ]
             ),

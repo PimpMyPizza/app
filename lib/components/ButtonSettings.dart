@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pilsbot/components/ButtonIcon.dart';
 import 'package:pilsbot/screens/Options.dart';
 
 class ButtonSettings extends StatelessWidget {
@@ -18,24 +19,14 @@ class ButtonSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
+    return ButtonIcon(
+      size: 50,
+      color: Colors.blue,
+      opacity: 1.0,
+      icon: Icons.settings,
+      callback: (){
         Navigator.of(context).push(_createRoute());
       },
-      child: Container(
-        width: 45,
-        height: 45,
-        padding: EdgeInsets.fromLTRB(0, 0, MediaQuery.of(context).size.width*0, 0),
-        decoration: BoxDecoration(
-          color: Colors.blue,
-          shape: BoxShape.circle
-        ),
-        child: Icon(
-          Icons.settings,
-          size: 38.0,
-          color: Colors.black54,
-        ),
-      )
     );
   }
 }

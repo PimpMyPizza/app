@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pilsbot/components/ButtonText.dart';
 import 'package:pilsbot/screens/Connecting.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -21,26 +22,16 @@ class ButtonConnect extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
+    return ButtonText(
+      width: MediaQuery.of(context).size.width*0.4,
+      height: 50,
+      color: Colors.blue,
+      opacity: 1.0,
+      text: AppLocalizations.of(context).login,
+      fontWeight: FontWeight.bold,
+      callback: (){
         Navigator.of(context).push(_createRoute());
       },
-      child: Container(
-        width: MediaQuery.of(context).size.width*0.4,
-        height: 45,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.blue,
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width*0.4),
-        ),
-        child: Text(AppLocalizations.of(context).login,
-          style: TextStyle(
-            fontSize: 24,
-            color: Colors.black54
-          ),
-        ),
-      )
     );
   }
 }

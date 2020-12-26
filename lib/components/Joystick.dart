@@ -83,12 +83,12 @@ class _JoystickState extends State<Joystick> {
         List<Widget> widgets = List<Widget>();
         if(mode == 'one_joystick' || mode == 'two_joysticks'){
           widgets.add(
-            JoystickView(size: MediaQuery.of(context).size.height * 0.32,
+            JoystickView(size: MediaQuery.of(context).size.height * 0.3,
               backgroundColor: Colors.blue,
-              innerCircleColor: Colors.blue,
-              iconsColor: Colors.black54,
+              innerCircleColor: Colors.black54.withOpacity(0.8),
+              iconsColor: Colors.orange,
               interval: Duration(milliseconds: 100),
-              showArrows: false,
+              showArrows: true,
               onDirectionChanged: (degree, distance) {
                 double v = degree * 0.01745329252; // ( * pi / 180 )
                 xl = distance * sin(v) * sensitivity;
@@ -99,12 +99,12 @@ class _JoystickState extends State<Joystick> {
         }
         if (mode == 'two_joysticks'){
           widgets.add(
-              JoystickView(size: MediaQuery.of(context).size.height * 0.32,
+              JoystickView(size: MediaQuery.of(context).size.height * 0.3,
                 backgroundColor: Colors.blue,
-                innerCircleColor: Colors.blue,
-                iconsColor: Colors.black54,
+                innerCircleColor: Colors.black54.withOpacity(0.8),
+                iconsColor: Colors.orange,
                 interval: Duration(milliseconds: 100),
-                showArrows: false,
+                showArrows: true,
                 onDirectionChanged: (degree, distance) {
                   double v = degree * 0.01745329252; // ( * pi / 180 )
                   xr = distance * sin(v) * sensitivity;

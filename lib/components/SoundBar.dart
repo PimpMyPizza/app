@@ -1,5 +1,7 @@
+import 'package:clippy_flutter/clippy_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pilsbot/components/ButtonIcon.dart';
 import 'package:pilsbot/model/Communication.dart';
 import 'package:roslib/roslib.dart';
 
@@ -45,32 +47,51 @@ class _SoundBarState extends State<SoundBar> {
 
   @override
   Widget build(BuildContext context) {
-    Icon icon;
+    IconData icon;
+    Color color;
+    Color colorSoundBar;
     if(volume == 0 || mute){
-      icon = Icon(Icons.volume_off, color: Colors.grey);
+      icon = Icons.volume_off;
+      color = Colors.grey;
+      colorSoundBar = Colors.black12;
     } else {
-      icon = Icon(Icons.volume_up, color: Colors.grey);
+      icon = Icons.volume_up;
+      color = Colors.blue;
+      colorSoundBar = Colors.black54;
     }
     return Container(
-      height: MediaQuery.of(context).size.height*0.68,
+      width: 56,
+      padding: EdgeInsets.all(3),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          RotatedBox(
-              quarterTurns: 3,
-              child: Slider(
-                value: volume,
-                activeColor: Colors.grey,
-                onChanged: (v){
-                  pub.publish({'data': volume});
-                  setState(() { volume = v; });
-                },
-              )
+          Container(
+            height: 180,
+            child: Bevel(
+              cutLength: 10,
+              child: Container(
+                width: 44,
+                color: color,
+                child: RotatedBox(
+                  quarterTurns: 3,
+                  child: Slider(
+                    value: volume,
+                    activeColor: colorSoundBar,
+                    onChanged: (v){
+                      pub.publish({'data': volume});
+                      setState(() { volume = v; });
+                    },
+                  )
+                ),
+              ),
+            ),
           ),
-          IconButton(
+          ButtonIcon(
             icon: icon,
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-            onPressed: (){
+            size: 44,
+            color: color,
+            opacity: 1.0,
+            callback: (){
               setState(() {
                 mute = !mute;
                 if(!mute){

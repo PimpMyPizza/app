@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pilsbot/model/Communication.dart';
 import 'package:roslib/roslib.dart';
+import 'package:pilsbot/model/globals.dart' as globals;
 
 class StateBattery extends StatefulWidget {
   StateBattery();
@@ -19,13 +19,10 @@ class _StateBatteryState extends State<StateBattery> {
   final int warning = 20;
   /// Ros topic to listen to
   Topic topic;
-  /// Communication with ROS
-  var com;
 
   @override
   void initState(){
-    com = RosCom();
-    topic = Topic(ros: com.ros, name: '/battery/percentage', type: "std_msgs/Float32", reconnectOnClose: true, queueLength: 10, queueSize: 10);
+    topic = Topic(ros: globals.com.ros, name: '/battery/percentage', type: "std_msgs/Float32", reconnectOnClose: true, queueLength: 10, queueSize: 10);
     super.initState();
     initConnection();
   }
@@ -47,7 +44,7 @@ class _StateBatteryState extends State<StateBattery> {
       builder: (context, snapshot) {
         if (snapshot.hasData)
         {
-          // Workaround to for the convertion from object to json
+          // Workaround to for the conversion from object to json
           value = Map<String, dynamic>.from(Map<String, dynamic>.from(snapshot.data)['msg'])['data'].round();
         }
         Color color;
